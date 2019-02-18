@@ -5,14 +5,16 @@ import sys
 try:
     host = sys.argv[1]
     fileName = sys.argv[2]
-except:
+except Exception:
     exit(1)
 
-fileFullAddress = "/tmp/" + fileName
+fileFullAddress = '/tmp/' + fileName
 
-cmd = 'touch ' + fileFullAddress + "; " + \
- 'ping -c 10 ' + host + ' > ' + fileFullAddress + " 2>&1; " + \
- 'touch ' + fileFullAddress + ".finished"
+cmd = (
+    'touch {fileFullAddress};ping -c 10 {host} > {fileFullAddress};'
+    'touch {fileFullAddress}.finished'.format(fileFullAddress=fileFullAddress,
+                                              host=host)
+)
 
-proc = subprocess.Popen(cmd,
-shell=True, stdin=None ,stdout=None,stderr=None, close_fds=True)
+proc = subprocess.Popen(cmd, shell=True, stdin=None, stdout=None,
+                        stderr=None, close_fds=True)
